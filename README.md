@@ -30,3 +30,6 @@ npm run cypress:open
 Para ejecutar todas las pruebas en modo headless, usa el siguiente comando:
 npm run cypress:run
 **********************************************
+
+
+# Nota: ESTE PROJECTO USA UNA BD NO RELACIONAL LA CUAL ES MONGODB

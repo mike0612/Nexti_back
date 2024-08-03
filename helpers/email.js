@@ -1,48 +1,31 @@
 const nodemailer = require('nodemailer');
-const { google } = require('googleapis');
-
-const OAuth2 = google.auth.OAuth2;
-
-const oauth2Client = new OAuth2(
-    process.env.CLIENT_ID,
-    process.env.CLIENT_SECRET,
-    process.env.REDIRECT_URI
-);
-
-oauth2Client.setCredentials({
-    refresh_token: process.env.REFRESH_TOKEN
-});
-
-const accessToken = oauth2Client.getAccessToken();
+require('dotenv').config();
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        type: 'OAuth2',
-        user: process.env.EMAIL_USER,
-        clientId: process.env.CLIENT_ID,
-        clientSecret: process.env.CLIENT_SECRET,
-        refreshToken: process.env.REFRESH_TOKEN,
-        accessToken: accessToken
-    }
+  host: process.env.MAILTRAP_HOST,
+  port: process.env.MAILTRAP_PORT,
+  auth: {
+    user: process.env.MAILTRAP_USER,
+    pass: process.env.MAILTRAP_PASS
+  }
 });
 
 const sendRecoveryEmail = async (to, subject, html) => {
-    const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to,
-        subject,
-        html
-    };
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to,
+    subject,
+    html
+  };
 
-    try {
-        await transporter.sendMail(mailOptions);
-        console.log('Email sent');
-    } catch (error) {
-        console.error('Error sending email:', error);
-    }
-}
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log('Email sent');
+  } catch (error) {
+    console.error('Error sending email:', error);
+  }
+};
 
 module.exports = {
-    sendRecoveryEmail
-}
+  sendRecoveryEmail
+};
